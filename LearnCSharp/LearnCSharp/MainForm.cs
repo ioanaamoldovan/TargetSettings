@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace LearnCSharp
@@ -7,8 +10,9 @@ namespace LearnCSharp
     {
         public delegate void myDelegate();
 
-        public static int current_value = 0;
         myDelegate mydele;
+        public static int current_value = 0;
+        IList<Person> personList = new List<Person>();
 
         public void showValue()
         {
@@ -35,6 +39,7 @@ namespace LearnCSharp
 
         private void mytimer_Tick(object sender, EventArgs e)
         {
+            personList.Add(new Person(current_value));
             mydele.Invoke();
         }
 
@@ -46,6 +51,9 @@ namespace LearnCSharp
         private void stop_btn_Click(object sender, EventArgs e)
         {
             mytimer.Enabled = false;
+
+            var adults = personList.Where(s => s.Age > 18)
+                .Select(s => s);
         }
     }
 }
