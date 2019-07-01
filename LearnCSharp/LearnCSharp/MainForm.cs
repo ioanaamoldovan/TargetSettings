@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Security.Cryptography;
+using LearnCSharp.Database;
 
 namespace LearnCSharp
 {
@@ -54,6 +55,38 @@ namespace LearnCSharp
 
             var adults = personList.Where(s => s.Age > 18)
                 .Select(s => s);
+        }
+
+        private void create_btn_Click(object sender, EventArgs e)
+        {
+            string username = UsernameTextBox.Text;
+            string password = Security.CreateMD5(PasswordTextBox.Text);
+
+            bool result = DBAccess.Instance.AddAccount(username, password);
+            if (!result)
+            {
+                MessageBox.Show("Add Account", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                MessageBox.Show("Add Account", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void check_btn_Click(object sender, EventArgs e)
+        {
+            string username = UsernameTextBox.Text;
+            string password = Security.CreateMD5(PasswordTextBox.Text);
+
+            bool result = DBAccess.Instance.CheckAccount(username, password);
+            if (!result)
+            {
+                MessageBox.Show("Check Account", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                MessageBox.Show("Check Account", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }
